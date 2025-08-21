@@ -3,8 +3,8 @@ import React from "react";
 
 const Header: React.FC = () => {
   return (
-    <div className="flex items-center bg-primary">
-      <div className="p-2.5 bg-[#42bccc]">
+    <div className="flex items-center bg-primary shadow-lg">
+      <div className="p-3 bg-[#42bccc]">
         <Menu className="text-white" />
       </div>
       <div className="flex items-center gap-1.5 p-1 px-2">
