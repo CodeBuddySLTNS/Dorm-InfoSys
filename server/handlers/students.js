@@ -31,6 +31,13 @@ const editStudent = async (req, res) => {
     throw new CustomError("All fields are required", status.BAD_REQUEST);
   }
 
+  if ((await Student.getById(res.locals.userId))?.role !== "admin") {
+    throw new CustomError(
+      "You are not authorized to edit this student",
+      status.FORBIDDEN
+    );
+  }
+
   req.body.userId = studentId;
   delete req.body.studentId;
 
@@ -40,6 +47,13 @@ const editStudent = async (req, res) => {
 
 const deleteStudent = async (req, res) => {
   const { studentId } = req.body || {};
+
+  if ((await Student.getById(res.locals.userId))?.role !== "admin") {
+    throw new CustomError(
+      "You are not authorized to edit this student",
+      status.FORBIDDEN
+    );
+  }
 
   const result = await Student.delete(studentId);
 
