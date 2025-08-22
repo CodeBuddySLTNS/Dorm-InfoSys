@@ -30,8 +30,6 @@ interface InputData {
 }
 
 const EditStudent: React.FC = () => {
-  const queryClient = useQueryClient();
-
   const { data: student, isLoading } = useQuery<StudentData>({
     queryKey: ["student"],
     queryFn: coleAPI("/students/byid"),
@@ -53,7 +51,6 @@ const EditStudent: React.FC = () => {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["students"] });
       toast.success("Information updated successfully");
     },
   });
