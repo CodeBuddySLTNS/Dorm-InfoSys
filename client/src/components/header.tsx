@@ -15,16 +15,19 @@ const Header: React.FC = () => {
   return (
     <div className="flex justify-between items-center bg-primary shadow-lg">
       <div className="flex items-center">
-        <div className="p-3 bg-[#42bccc]">
+        <div className="p-3 hidden min-[410px]:inline-block bg-[#42bccc]">
           <Menu className="text-white" />
         </div>
         <div className="flex items-center gap-1.5 p-1 px-2">
           <img className="w-[35px]" src="/img/logo.png" alt="logo" />
           <div className="text-white">
             <h1 className="leading-4.5 uppercase font-bold">
-              Philippine Advent College Inc.
+              Philippine Advent College{" "}
+              <span className="hidden min-[360px]:inline-block">Inc.</span>
             </h1>
-            <p className="leading-4.5">Dormitory Information System</p>
+            <p className="leading-4.5 text-sm min-[360px]:text-base">
+              Dormitory Information System
+            </p>
           </div>
         </div>
       </div>
@@ -33,7 +36,7 @@ const Header: React.FC = () => {
         onClick={handleLogout}
       >
         <LogOut size={18} />
-        Logout
+        <span className="hidden md:inline-block">Logout</span>
       </div>
     </div>
   );

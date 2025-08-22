@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { coleAPI } from "@/lib/utils";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
@@ -104,6 +104,9 @@ const EditStudent: React.FC = () => {
   return (
     <div className="md:mt-10 p-2.5 pb-6 max-w-4xl mx-auto">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+        <h1 className="font-bold uppercase sm:text-center text-xl mb-4">
+          Update My Information
+        </h1>
         <div className="flex flex-col md:flex-row md:space-x-2 md:items-end">
           <div className="flex-1 mb-2 md:mb-0">
             <Label htmlFor="firstName">First Name</Label>
