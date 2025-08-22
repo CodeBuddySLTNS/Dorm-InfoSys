@@ -5,6 +5,7 @@ import { useMainStore } from "./store";
 
 const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const loggedIn = useMainStore((state) => state.loggedIn);
+  const user = useMainStore((state) => state.user);
 
   if (!loggedIn) {
     return <div className="w-full h-dvh">{children}</div>;
@@ -13,10 +14,14 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <div className="w-full h-dvh grid [grid-template-rows:auto_1fr]">
       <Header />
-      <div className="grid [grid-template-columns:1fr_4fr]">
-        <Sidebar />
+      {user?.role === "admin" ? (
+        <div className="grid [grid-template-columns:250px_1fr]">
+          <Sidebar />
+          <div>{children}</div>
+        </div>
+      ) : (
         <div>{children}</div>
-      </div>
+      )}
     </div>
   );
 };

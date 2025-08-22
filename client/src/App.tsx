@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Layout from "./layout";
-import Dashboard from "./pages/dashboard";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Login from "./pages/login";
 import ManageAccounts from "./pages/accounts";
@@ -9,6 +8,7 @@ import { useMainStore } from "./store";
 import { useQuery } from "@tanstack/react-query";
 import { coleAPI } from "./lib/utils";
 import { Loader } from "lucide-react";
+import Homepage from "./pages/homepage";
 
 const App: React.FC = () => {
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ const App: React.FC = () => {
   return (
     <Layout>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Homepage />} />
         <Route path="/students" element={<ManageAccounts />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Signup />} />
