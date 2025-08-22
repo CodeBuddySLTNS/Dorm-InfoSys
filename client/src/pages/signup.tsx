@@ -1,8 +1,21 @@
 import { coleAPI } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+type Department = {
+  departmentId: number;
+  departmentName: string;
+  acronym: string;
+};
 
 type SignupData = {
   firstName: string;
@@ -18,6 +31,11 @@ type SignupData = {
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
+
+  const { data } = useQuery<Department[]>({
+    queryKey: ["departments"],
+    queryFn: coleAPI("/departments", "GET"),
+  });
 
   const { mutateAsync: signup } = useMutation({
     mutationFn: coleAPI("/auth/signup", "POST"),
@@ -45,7 +63,7 @@ const Signup: React.FC = () => {
       <div className="w-full h-dvh flex justify-center md:overflow-y-auto">
         <div className="w-full max-w-md h-full md:h-max flex flex-col items-center gap-3 p-4 bg-white rounded">
           <h1 className="text-2xl mb-4 text-center">Student Registration</h1>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             <div className="flex flex-col md:flex-row md:space-x-2 md:items-end">
               <div className="flex-1 mb-2 md:mb-0">
                 <label
@@ -154,14 +172,14 @@ const Signup: React.FC = () => {
                   className="block text-sm font-medium text-gray-600 mb-1"
                   htmlFor="guardian"
                 >
-                  Guardian Name
+                  Parent/Guardian
                 </label>
                 <input
                   id="guardian"
                   {...register("guardian")}
                   type="text"
                   required
-                  placeholder="Guardian Name"
+                  placeholder="Enter Name"
                   className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
                 />
               </div>
@@ -175,7 +193,7 @@ const Signup: React.FC = () => {
                 <input
                   id="phone"
                   {...register("phone")}
-                  type="tel"
+                  type="number"
                   required
                   placeholder="Phone Number"
                   className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -188,21 +206,34 @@ const Signup: React.FC = () => {
                 className="block text-sm font-medium text-gray-600 mb-1"
                 htmlFor="departmentId"
               >
-                Department ID
+                Program/Course
               </label>
-              <input
-                id="departmentId"
-                {...register("departmentId", { valueAsNumber: true })}
-                type="number"
-                required
-                placeholder="Department ID"
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-              />
+              <Select
+                onValueChange={(value) => {
+                  register("departmentId").onChange({
+                    target: { value: Number(value) },
+                  });
+                }}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Program" />
+                </SelectTrigger>
+                <SelectContent>
+                  {data?.map((department) => (
+                    <SelectItem
+                      key={department.departmentId}
+                      value={String(department.departmentId)}
+                    >
+                      {department.departmentName}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded mt-1 transition duration-300"
+              className="w-full bg-primary hover:bg-blue-500 text-white font-semibold py-3 px-4 rounded mt-1 transition duration-300"
             >
               Sign Up
             </button>

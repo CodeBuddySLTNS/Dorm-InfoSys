@@ -2,19 +2,30 @@ import { coleAPI } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMainStore } from "@/store";
+import { toast } from "sonner";
 
 type loginCred = { username: string; password: string };
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
+
   const { mutateAsync: login } = useMutation({
     mutationFn: coleAPI("/auth/login", "POST"),
     onSuccess: (d) => {
-      console.log(d);
+      useMainStore.getState().setLoggedIn(true);
+      useMainStore.getState().setUser(d.user);
+      localStorage.setItem("token", d.token);
+      navigate("/");
+      reset();
+    },
+    onError: () => {
+      toast.error("Invalid username or password");
     },
   });
 
-  const { register, handleSubmit } = useForm<loginCred>();
+  const { register, handleSubmit, reset } = useForm<loginCred>();
 
   const onSubmit = async (data: loginCred) => {
     try {
