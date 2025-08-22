@@ -25,7 +25,7 @@ const Sidebar: React.FC = () => {
             className="w-14 h-14 rounded-full shadow border-2 border-primary"
             src="/img/default-icon.png"
           />
-          <h3 className="text-white text-xl">Administrator</h3>
+          <h3 className="text-white text-xl mt-2">Administrator</h3>
         </div>
       </div>
       <nav>
