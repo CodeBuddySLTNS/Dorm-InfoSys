@@ -79,10 +79,10 @@ export const User = {
     let updates = [];
     let values = [];
 
-    if (studentId !== undefined) {
-      updates.push("studentId = ?");
-      values.push(studentId);
-    }
+    // if (studentId !== undefined) {
+    //   updates.push("studentId = ?");
+    //   values.push(studentId);
+    // }
     if (firstName) {
       updates.push("firstName = ?");
       values.push(firstName);
