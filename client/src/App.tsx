@@ -4,6 +4,7 @@ import Dashboard from "./pages/dashboard";
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/login";
 import ManageAccounts from "./pages/accounts";
+import Signup from "./pages/signup";
 
 const App: React.FC = () => {
   return (
@@ -12,6 +13,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Dashboard />} />
         <Route path="/students" element={<ManageAccounts />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Signup />} />
       </Routes>
     </Layout>
   );
