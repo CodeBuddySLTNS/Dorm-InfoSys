@@ -45,8 +45,11 @@ const Signup: React.FC = () => {
     onError: (error) => {
       if (error instanceof Error) {
         const axErr = error as AxiosError<Error>;
-        if (axErr.response?.data.message === "Already exists!")
-          return toast.error("Username already taken, please try another.");
+        if (axErr.response?.data.message) {
+          if (axErr.response?.data.message === "Already exists!")
+            return toast.error("Username already taken, please try another.");
+          return toast.error(axErr.response.data.message);
+        }
         toast.error("Unable to connect to the server");
       }
     },
