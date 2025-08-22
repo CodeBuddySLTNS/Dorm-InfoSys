@@ -5,12 +5,7 @@ const authenticate = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     const secretKey = process.env.SYSTEM_SECRET_KEY;
-    const whiteList = [
-      "/attendances",
-      "/attendances/add",
-      "/auth/login",
-      "/auth/signup",
-    ];
+    const whiteList = ["/departments", "/auth/login", "/auth/signup"];
 
     if (whiteList.includes(req.path)) {
       return next();
