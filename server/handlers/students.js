@@ -1,23 +1,15 @@
 import status from "http-status";
 import { Student } from "../database/models/student.js";
 import { CustomError } from "../lib/utils.js";
+import { User } from "../database/models/users.js";
 
 const students = async (req, res) => {
   const result = await Student.getAll();
   res.send(result);
 };
 
-const studentsByDepartment = async (req, res) => {
-  const { date, departmentId, year } = req.query || {};
-  if (!date || !departmentId || !year) {
-    throw new CustomError("All fields are required", status.BAD_REQUEST);
-  }
-
-  const result = await Student.getStudentsByDepartment(
-    date,
-    departmentId,
-    year
-  );
+const studentsById = async (req, res) => {
+  const result = await Student.getById(res.locals.userId);
   res.send(result);
 };
 
@@ -33,19 +25,27 @@ const addStudent = async (req, res) => {
 };
 
 const editStudent = async (req, res) => {
-  const { studentId, name, departmentId, year } = req.body || {};
+  const { studentId } = req.body || {};
 
-  if (!studentId || !name || !departmentId || !year) {
+  if (!studentId) {
     throw new CustomError("All fields are required", status.BAD_REQUEST);
   }
 
-  const result = await Student.update(req.body);
+  req.body.userId = studentId;
+  delete req.body.studentId;
+
+  const result = await User.update(studentId, req.body);
   res.status(status.CREATED).send(result);
 };
 
 const deleteStudent = async (req, res) => {
-  const { userId } = req.body || {};
-  const result = await Student.delete(userId);
+  const { studentId } = req.body || {};
+
+  const result = await Student.delete(studentId);
+
+  if (result.affectedRows === 0)
+    throw new CustomError("No user found.", status.NOT_FOUND);
+
   res.send(result);
 };
 
@@ -54,5 +54,5 @@ export default {
   addStudent,
   editStudent,
   deleteStudent,
-  studentsByDepartment,
+  studentsById,
 };
