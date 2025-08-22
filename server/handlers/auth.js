@@ -38,13 +38,42 @@ const session = async (req, res) => {
 };
 
 const signup = async (req, res) => {
-  const { name, username, password } = req.body;
+  const {
+    firstName,
+    middleName,
+    lastName,
+    username,
+    password,
+    address,
+    guardian,
+    phone,
+    departmentId,
+  } = req.body;
 
-  if (!name || !username || !password) {
+  if (
+    !firstName ||
+    !lastName ||
+    !username ||
+    !password ||
+    !address ||
+    !guardian ||
+    !phone ||
+    !departmentId
+  ) {
     throw new CustomError("Missing fields are required.", status.BAD_REQUEST);
   }
 
-  const result = await User.add(name, username, password);
+  const result = await User.add({
+    firstName,
+    middleName,
+    lastName,
+    username,
+    password,
+    address,
+    guardian,
+    phone,
+    departmentId,
+  });
   res.send(result);
 };
 

@@ -1,6 +1,6 @@
 /*
  INSERT INTO users(name, password, role, year)
-      VALUES ('admin', '$2b$10$xqpfTeyhL92u5BeEGEGH3eU6cfpTtGnXZy5WPE2TcMuvCCrZFjW3a', 'admin', 1)
+      VALUES ('admin', '$2b$10$D1n72/umpykU8kigc8Mm2.FAP0nbobOxKenwsDAyrKah5PPTEWCiS', 'admin', 1)
 */
 
 export const sqlTableQueries = `
@@ -16,7 +16,7 @@ export const sqlTableQueries = `
         firstName VARCHAR(30) NOT NULL,
         middleName VARCHAR(30),
         lastName VARCHAR(30) NOT NULL,
-        username VARCHAR(100) NOT NULL,
+        username VARCHAR(100) UNIQUE NOT NULL,
         password VARCHAR(255),
         address VARCHAR(255),
         guardian VARCHAR(80),
@@ -28,7 +28,7 @@ export const sqlTableQueries = `
     );
 
     INSERT INTO users(firstName, lastName, username, password, role)
-      VALUES ('Juan', 'Tamad', 'juan', '$2b$10$xqpfTeyhL92u5BeEGEGH3eU6cfpTtGnXZy5WPE2TcMuvCCrZFjW3a', 'admin');
+      VALUES ('Juan', 'Tamad', 'juan', '$2b$10$D1n72/umpykU8kigc8Mm2.FAP0nbobOxKenwsDAyrKah5PPTEWCiS', 'admin');
 
     INSERT INTO departments (departmentName, acronym) VALUES 
         ("Bachelor of Science in Computer Science", "BSCS"),
