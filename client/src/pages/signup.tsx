@@ -10,12 +10,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-type Department = {
-  departmentId: number;
-  departmentName: string;
-  acronym: string;
-};
+import { toast } from "sonner";
+import type { AxiosError } from "axios";
+import type { Department } from "@/types/data.types";
 
 type SignupData = {
   firstName: string;
@@ -40,11 +37,22 @@ const Signup: React.FC = () => {
   const { mutateAsync: signup } = useMutation({
     mutationFn: coleAPI("/auth/signup", "POST"),
     onSuccess: () => {
-      navigate("/login");
+      toast.success("Account created successfully! Redirecting to login...");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    },
+    onError: (error) => {
+      if (error instanceof Error) {
+        const axErr = error as AxiosError<Error>;
+        if (axErr.response?.data.message === "Already exists!")
+          return toast.error("Username already taken, please try another.");
+        toast.error("Unable to connect to the server");
+      }
     },
   });
 
-  const { register, handleSubmit } = useForm<SignupData>();
+  const { register, setValue, handleSubmit } = useForm<SignupData>();
 
   const onSubmit = async (data: SignupData) => {
     try {
@@ -61,7 +69,7 @@ const Signup: React.FC = () => {
       </div>
 
       <div className="w-full h-dvh flex justify-center md:overflow-y-auto">
-        <div className="w-full max-w-md h-full md:h-max flex flex-col items-center gap-3 p-4 bg-white rounded">
+        <div className="w-full max-w-md h-full md:mt-4 md:h-max flex flex-col items-center gap-3 p-4 bg-white rounded">
           <h1 className="text-2xl mb-4 text-center">Student Registration</h1>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             <div className="flex flex-col md:flex-row md:space-x-2 md:items-end">
@@ -210,9 +218,7 @@ const Signup: React.FC = () => {
               </label>
               <Select
                 onValueChange={(value) => {
-                  register("departmentId").onChange({
-                    target: { value: Number(value) },
-                  });
+                  setValue("departmentId", Number(value));
                 }}
               >
                 <SelectTrigger className="w-full">

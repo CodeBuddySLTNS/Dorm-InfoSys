@@ -5,6 +5,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMainStore } from "@/store";
 import { toast } from "sonner";
+import type { AxiosError } from "axios";
 
 type loginCred = { username: string; password: string };
 
@@ -20,8 +21,13 @@ const Login: React.FC = () => {
       navigate("/");
       reset();
     },
-    onError: () => {
-      toast.error("Invalid username or password");
+    onError: (error) => {
+      if (error instanceof Error) {
+        const axErr = error as AxiosError<Error>;
+        if (axErr.response?.data.message)
+          return toast.error(axErr.response.data.message);
+        toast.error("Unable to connect to the server");
+      }
     },
   });
 
@@ -41,7 +47,7 @@ const Login: React.FC = () => {
         <img className="w-[30%]" src="/img/logo.png" alt="logo" />
       </div>
 
-      <div className="w-full h-dvh flex items-center justify-center md:overflow-y-auto">
+      <div className="w-full md:h-dvh flex items-center justify-center md:overflow-y-auto">
         <div className="w-full max-w-md h-full md:h-max flex flex-col items-center gap-3 p-4 bg-white rounded">
           <img
             className="w-[30%] hidden md:block"
