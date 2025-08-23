@@ -58,8 +58,8 @@ const EditStudent: React.FC<{
     },
   });
 
-  const { register, setValue, handleSubmit, reset, control } =
-    useForm<InputData>({
+  const { register, setValue, handleSubmit, reset, watch } = useForm<InputData>(
+    {
       defaultValues: {
         firstName: student.firstName ?? "",
         middleName: student.middleName ?? "",
@@ -71,7 +71,9 @@ const EditStudent: React.FC<{
         phone: student.phone ?? "",
         departmentId: student.departmentId ?? undefined,
       },
-    });
+    }
+  );
+  const departmentId = watch("departmentId");
 
   useEffect(() => {
     reset({
@@ -209,7 +211,7 @@ const EditStudent: React.FC<{
                 onValueChange={(value) =>
                   setValue("departmentId", Number(value))
                 }
-                value={String(control._formValues?.departmentId ?? "")}
+                value={departmentId !== undefined ? String(departmentId) : ""}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select Program" />
