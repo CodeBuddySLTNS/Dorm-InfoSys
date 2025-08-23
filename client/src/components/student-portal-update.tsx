@@ -45,7 +45,7 @@ const UpdateInformation: React.FC<{ student: StudentData }> = ({ student }) => {
       }
     },
     onSuccess: () => {
-      toast.success("Student updated successfully");
+      toast.success("Information updated successfully");
     },
   });
 
