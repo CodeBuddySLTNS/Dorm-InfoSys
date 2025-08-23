@@ -43,7 +43,7 @@ const deleteStudent = async (req, res) => {
 
   if ((await User.getInfo(res.locals.userId))?.role !== "admin") {
     throw new CustomError(
-      "You are not authorized to edit this student",
+      "You are not authorized to delete this student",
       status.FORBIDDEN
     );
   }
