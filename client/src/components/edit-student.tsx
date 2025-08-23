@@ -21,6 +21,7 @@ import {
 } from "./ui/select";
 import { Button } from "./ui/button";
 import type { Department, StudentData } from "@/types/data.types";
+import type { AxiosError } from "axios";
 
 interface InputData {
   firstName: string;
@@ -48,8 +49,13 @@ const EditStudent: React.FC<{
 
   const { mutateAsync: updateStudent, isPending } = useMutation({
     mutationFn: coleAPI("/students/update", "PATCH"),
-    onError: () => {
-      toast.error("Failed to update student");
+    onError: (error) => {
+      if (error instanceof Error) {
+        const axErr = error as AxiosError<Error>;
+        if (axErr.response?.data.message)
+          return toast.error(axErr.response.data.message);
+        toast.error("Unable to connect to the server");
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["students"] });
